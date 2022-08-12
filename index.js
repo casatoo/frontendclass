@@ -1,49 +1,10 @@
-// const firstbutton = $('.slider > .btns >button').first();
-// const lastbutton = $('.slider > .btns >button').last();
+$('.page-nav>div').on('click',function(event){
+    const target = $(event.target);
+    let index = target.index();
 
-// console.log(firstbutton);
-// console.log(lastbutton);
+    $('.slides > div').removeClass('active');
+    $('.slides > div').eq(index).addClass('active');
+    $('.page-nav > div').removeClass('active');
+    $('.page-nav > div').eq(index).addClass('active');
 
-// firstbutton.on('click',function(){
-//     const target = $('.slides>.active');
-
-//     target.prev().addClass('.active');
-//     target.removeClass('.active');
-
-//     $('.active').css('border-color', 'red');
-// })
-
-// lastbutton.on('click',function(){
-//     const target = $('.slides>.active');
-
-//     target.next().addClass('.active');
-//     target.removeClass('.active');
-
-//     $('.active').css('border-color', 'red');
-// })
-
-let order =0;
-const lastOrder = $('sliders > div').length-1;
-
-$('.btns > button').eq(0).on('click',function(){
-    if(order == 0){
-        order = lastOrder;
-    }else{
-        order--;
-    }
-    $('.slides>div').removeClass('active');
-
-    $('.slides>div').eq(order).addClass('active');
 })
-
-$('.btns > button').eq(1).on('click',function(){
-    if(order == lastOrder){
-        order = 0;
-    }else{
-        order++;
-    }
-    $('.slides>div').removeClass('active');
-
-    $('.slides>div').eq(order).addClass('active');
-})
-
