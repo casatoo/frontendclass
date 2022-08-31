@@ -6,6 +6,12 @@ $(document).ready(function(){
  function deleteTodo(event){
 
     $(event.target).parent().remove();
+
+    }
+
+function modifyTodo(event){
+
+
 }
 
 function addEvents(){
@@ -14,7 +20,7 @@ function addEvents(){
         event.preventDefault();
         const todo = $('.todo-text').val();
         const html = `<li><span>${todo}<button type="button" onclick="deleteTodo(event);" class="btn-delete">삭제</button>
-        <button type="button" class="btn-modify">수정</button></li>`;
+        <button type="button" onclick="modifyTodo(event);" class="btn-modify">수정</button></li>`;
         $('ul').prepend(html);
         $('.todo-text').val('');
     })
@@ -24,9 +30,10 @@ function addEvents(){
         const clear = '<li><span>go to position class</span></li>';
         $('ul').append(clear);
     })
-
+    
     $('.btn-delete').on('click',deleteTodo)
-
+    
+    $('.btn-modify').on('click',modifyTodo)
 
 }
 
@@ -50,4 +57,13 @@ function addEvents(){
  * 1. 수정 버튼에 이벤트
  * 2. input으로 바꾸기 전에 text 기억하기
  * 3. form 추가
+ * 4. target
+ * 5. 수정하기 전 값 가져오기 sibling.span
+ * 6. input type text value = text() 추가, span remove
+ * 7. 다시 입력하는 내용 추가
+ * 8. 자식요소의 input 을 찾기 위해 find("input")
+ * 9. input에 입력된 값 저장
+ * 10. input remove
+ * 11. span prepend
+ * 12. 수정버튼이 두번 눌려서 input이 두개 생기는 경우 조건문으로 막기 (focus)
  */
