@@ -35,12 +35,11 @@
 /**
  * A 를 # 으로
  */
-let str = 'BANANA';
+// let str = 'BANANA';
 
-let str2 = str.replaceAll('A','#');
+// let str2 = str.replaceAll('A','#');
 
-console.log(str2);
-
+// console.log(str2);
 
 /**
  * 차량 10부제
@@ -48,39 +47,59 @@ console.log(str2);
  * 주어진 배열의 뒷자리를 주어진 숫자로 해당되는 갯수를 찾는다.
  */
 
-const date = 0;
-const carNumber = [12,20,54,30,87,91,30];
+// const date = 0;
+// const carNumber = [12,20,54,30,87,91,30];
 
+// function 차량10부제(){
+//   let count =0;
+//   for( let i of carNumber){
+//     let str = i.toString();
 
-function 차량10부제(){
-  let count =0;
-  for( let i of carNumber){
-    let str = i.toString();
+//     if(str.includes(date)){
+//       count +=1;
 
-    if(str.includes(date)){
-      count +=1;
+//     }
+//   }
+//   return count;
+// }
+
+// console.log(차량10부제());
+
+/** 문자 찾기
+ * 문자열을 입력받고 특정문자를 찾아서 갯수를 출력
+ */
+let str3 = "COMPUTERPROGRAMMING";
+let saerchStr3 = "R";
+
+function 문자찾기() {
+  let count = 0;
+  let splitStr3 = str3.split("");
+  for (let i of splitStr3) {
+    if (i == "R") {
+      count += 1;
     }
   }
   return count;
 }
 
-console.log(차량10부제());
+console.log(문자찾기());
 
-/** 문자 찾기
- * 문자열을 입력받고 특정문자를 찾아서 갯수를 출력
+/**
+ * 대소문자 변환
+ * 문자열을 입력받아 대문자는 소문자로 소문자는 대문자로 변환
  */
-let str3 = 'COMPUTERPROGRAMMING';
-let saerchStr3 = 'R';
 
-function 문자찾기(){
-  let count = 0; 
-  let splitStr3 = str3.split('');
-  for(let i of splitStr3){
-    if(i == 'R'){
-      count += 1;
+let str4 = "StuDY";
+let str5 ='';
+
+function 대소문자변환() {
+  for (let i = 0; i < str4.length; i++) {
+    if (str4[i] == str4[i].toUpperCase()) {
+      str5 += str4[i].toLowerCase();
+    }else{
+      str5 += str4[i].toUpperCase();
     }
   }
-  return count;
-} 
-
-console.log(문자찾기());
+  console.log(str5);
+}
+대소문자변환();

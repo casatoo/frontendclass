@@ -7,3 +7,13 @@ a{
     text-decoration: none;
     color:inherit;
 }
+.top-bar{
+    background-color: black;
+    color:white;
+    display: flex; 
+    height: 100px;
+    width: 100%;
+}
+.top-bar>ul{
+    display: flex;
+}
