@@ -90,6 +90,11 @@ const str5 = 'teachermode';
 const str6 = 'e';
 
 function 짧은문자거리(str5,str6){
-  console.log(str5.split('e'));
+  let count ='';
+  1 = 1
+  2 = 11
+  3 = 121
+  4 = 1221
+  5 = 12321
 }
 짧은문자거리(str5,str6);
