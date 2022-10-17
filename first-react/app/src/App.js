@@ -41,7 +41,7 @@ function App() {
     });
     setTodos(cloneTodos);
   }
-
+  
   return (
     <div className="App">
       <input type="text" className="input" onChange={(event)=>{
