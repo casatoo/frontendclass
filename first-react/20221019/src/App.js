@@ -235,6 +235,7 @@ function Main() {
 
 function Sub() {
   const navigation = useNavigate();
+  const { loginUser } = React.useContext(StoreContext);
   return (
     <div>
       서브페이지{" "}
