@@ -1,6 +1,9 @@
+/* eslint-disable default-case */
 import "./App.css";
 import React from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+
+import axios from "axios";
 
 const ProgressBar = (props) => {
   const width = (480 / 5) * props.step;
@@ -19,12 +22,10 @@ const Question = (props) => {
   );
 };
 const Answer = (props) => {
-  const { msg, value } = props;
+  const { msg, value, page } = props;
   const navigation = useNavigate();
 
   const pathName = window.location.pathname;
-  const nextPage = parseInt(pathName.charAt(pathName.length - 1)) + 1;
-
   const { setDispatchType } = React.useContext(StoreContext);
 
   return (
@@ -36,10 +37,9 @@ const Answer = (props) => {
           setDispatchType({
             code: "답변",
             params: {
-              value: { value },
+              value: props.value,
             },
           });
-          navigation(`/page${nextPage}`);
         }}
       >
         {msg}
@@ -133,17 +133,39 @@ function Page4() {
     />
   );
 }
+
+function Result() {
+  const { state } = useLocation();
+
+  const MBTI결과가져오기 = async () => {
+    await axios({
+      url: "http://127.0.0.1:5000/mbti",
+      method: "get",
+      responseType: "json",
+      params: state,
+    })
+      .then((Response) => {
+        console.log(Response.data);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  };
+  React.useEffect(() => {
+    MBTI결과가져오기();
+  }, []);
+  return <div className="main-app"></div>;
+}
+
 const StoreContext = React.createContext({});
 
 function App() {
+  const navigation = useNavigate();
+
   const [dispatch, setDispatchType] = React.useState({
     code: null,
     params: null,
   });
-  React.useEffect(() => {
-    console.log(dispatch);
-  }, [dispatch]);
-
   const [mbti, setMbti] = React.useState([
     {
       I: 0,
@@ -162,16 +184,41 @@ function App() {
       J: 0,
     },
   ]);
+  let [Page, setPage] = React.useState(1);
 
-  <StoreContext.Provider value={{ setDispatchType }} />;
+  React.useEffect(() => {
+    switch (dispatch.code) {
+      case "답변":
+        const cloneMbti = [...mbti];
+        const findIndex = cloneMbti.findIndex((item) => {
+          return item[dispatch.params.value] !== undefined;
+        });
+
+        cloneMbti[findIndex][dispatch.params.value] += 1;
+        setMbti(cloneMbti);
+
+        const nextPage = (Page += 1);
+        setPage(nextPage);
+        if (nextPage === 5) {
+          navigation(`/Result`, { state: mbti });
+        } else {
+          navigation(`/page${nextPage}`);
+        }
+        break;
+    }
+  }, [dispatch]);
+
   return (
-    <Routes>
-      <Route exact path="/" element={<Main />} />
-      <Route exact path="/Page1" element={<Page1 />} />
-      <Route exact path="/Page2" element={<Page2 />} />
-      <Route exact path="/Page3" element={<Page3 />} />
-      <Route exact path="/Page4" element={<Page4 />} />
-    </Routes>
+    <StoreContext.Provider value={{ setDispatchType, Page, setPage }}>
+      <Routes>
+        <Route exact path="/" element={<Main />} />
+        <Route exact path="/Page1" element={<Page1 />} />
+        <Route exact path="/Page2" element={<Page2 />} />
+        <Route exact path="/Page3" element={<Page3 />} />
+        <Route exact path="/Page4" element={<Page4 />} />
+        <Route exact path="/Result" element={<Result />} />
+      </Routes>
+    </StoreContext.Provider>
   );
 }
 
