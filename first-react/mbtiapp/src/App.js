@@ -6,7 +6,8 @@ import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 
 const ProgressBar = (props) => {
-  const width = (480 / 5) * props.step;
+  const width = (480 / 4) * props.step;
+
   return (
     <div className="progress-bar">
       <div className="percent" style={{ width: width }}></div>
@@ -27,7 +28,6 @@ const Answer = (props) => {
 
   const pathName = window.location.pathname;
   const { setDispatchType } = React.useContext(StoreContext);
-
   return (
     <div className="button-box">
       <button
@@ -62,6 +62,14 @@ function DefaultPage(props) {
 
 function Main() {
   const navigation = useNavigate();
+  const { setDispatchType } = React.useContext(StoreContext);
+
+  console.log(localStorage);
+
+  if (window.confirm("")) {
+    window.open("exit.html", "Thanks for Visiting!");
+  }
+
   return (
     <div className="main-app">
       <div className="img-box">
@@ -135,7 +143,9 @@ function Page4() {
 }
 
 function Result() {
+  const navigation = useNavigate();
   const { state } = useLocation();
+  const [result, setResult] = React.useState({});
 
   const MBTI결과가져오기 = async () => {
     await axios({
@@ -146,6 +156,7 @@ function Result() {
     })
       .then((Response) => {
         console.log(Response.data);
+        setResult(Response.data);
       })
       .catch((e) => {
         console.log(e);
@@ -154,7 +165,23 @@ function Result() {
   React.useEffect(() => {
     MBTI결과가져오기();
   }, []);
-  return <div className="main-app"></div>;
+  localStorage.clear();
+  return (
+    <div className="main-app">
+      <img src={result.content} alt="" />
+      <div className="button-box">
+        <button
+          className="button-start"
+          type="button"
+          onClick={() => {
+            navigation("/Page1");
+          }}
+        >
+          다시하기
+        </button>
+      </div>
+    </div>
+  );
 }
 
 const StoreContext = React.createContext({});
@@ -197,9 +224,13 @@ function App() {
         cloneMbti[findIndex][dispatch.params.value] += 1;
         setMbti(cloneMbti);
 
-        const nextPage = (Page += 1);
+        let nextPage = (Page += 1);
         setPage(nextPage);
+        localStorage.setItem(dispatch.params.value, nextPage);
+        console.log(localStorage.getItem(dispatch.params.value));
         if (nextPage === 5) {
+          nextPage = 1;
+          setPage(nextPage);
           navigation(`/Result`, { state: mbti });
         } else {
           navigation(`/page${nextPage}`);
@@ -209,7 +240,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <StoreContext.Provider value={{ setDispatchType, Page, setPage }}>
+    <StoreContext.Provider value={{ dispatch, setDispatchType, Page, setPage }}>
       <Routes>
         <Route exact path="/" element={<Main />} />
         <Route exact path="/Page1" element={<Page1 />} />
